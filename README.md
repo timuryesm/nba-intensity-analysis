@@ -8,6 +8,7 @@ This project investigates the evolution of NBA game intensity and its potential 
 - **1995-96 Season (Calculated):** 93.80 Pace
 - **2024-25 Season (Current):** 100.61 Pace
 - **Trend:** The modern game remains significantly faster than the 90s, requiring athletes to perform more high-intensity actions per minute of play.
+![NBA Pace Comparison](pace_comparison.png)
 
 ### Technical Challenges Overcome
 - **Data Recovery:** Resolved `NaN` issues for historical seasons in the NBA API by implementing a manual Pace calculation formula: `Possessions = FGA + 0.44 * FTA - OREB + TOV`.
