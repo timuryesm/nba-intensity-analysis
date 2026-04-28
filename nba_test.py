@@ -1,38 +1,31 @@
-from nba_api.stats.endpoints import leagueleaders
 import pandas as pd
-import sys
+from nba_api.stats.endpoints import leaguestandingsv3, teamestimatedmetrics
+from sklearn.linear_model import LinearRegression
 
-# Now targeting the current 2024-25 season
-print("Fetching historical data for 1995-96 and current for 2024-25...")
+class NBAPredictor:
+    def __init__(self):
+        self.model = LinearRegression()
+        self.training_seasons = ['2020-21', '2021-22', '2022-23', '2023-24', '2024-25']
 
-try:
-    # Get 1995-96 data for comparison
-    data_90s = leagueleaders.LeagueLeaders(season='1995-96').get_data_frames()[0]
-    
-    # Get 2024-25 data (Current Season)
-    data_modern = leagueleaders.LeagueLeaders(season='2024-25').get_data_frames()[0]
+    def train_model(self):
+        combined_data = []
+        for season in self.training_seasons:
+            standings = leaguestandingsv3.LeagueStandingsV3(season=season).get_data_frames()[0]
+            metrics = teamestimatedmetrics.TeamEstimatedMetrics(season=season).get_data_frames()[0]
+            merged = pd.merge(
+                standings[['TeamID', 'WINS']], 
+                metrics[['TEAM_ID', 'E_NET_RATING', 'E_PACE', 'E_OFF_RATING', 'E_DEF_RATING']], 
+                left_on='TeamID', right_on='TEAM_ID'
+            )
+            combined_data.append(merged)
+        
+        df = pd.concat(combined_data)
+        X = df[['E_NET_RATING', 'E_PACE', 'E_OFF_RATING', 'E_DEF_RATING']]
+        y = df['WINS']
+        self.model.fit(X, y)
 
-    if data_90s.empty or data_modern.empty:
-        print("Data is empty. Check your connection or season parameters.")
-        sys.exit()
-
-    # Calculation function to avoid repetition
-    def calculate_pace(df):
-        total_fga = df['FGA'].sum()
-        total_fta = df['FTA'].sum()
-        total_oreb = df['OREB'].sum()
-        total_tov = df['TOV'].sum()
-        total_min = df['MIN'].sum()
-        total_poss = total_fga + (0.44 * total_fta) - total_oreb + total_tov
-        return (total_poss / (total_min / 5)) * 48
-
-    pace_95 = calculate_pace(data_90s)
-    pace_modern = calculate_pace(data_modern)
-
-    print(f"\n--- Analysis Results (Updated for 2024-25) ---")
-    print(f"Calculated Pace for 1995-96: {pace_95:.2f}")
-    print(f"Calculated Pace for 2024-25: {pace_modern:.2f}")
-    print(f"Difference: {pace_modern - pace_95:.2f} possessions.")
-
-except Exception as e:
-    print(f"Error: {e}")
+    def predict_season(self, season='2025-26'):
+        current_metrics = teamestimatedmetrics.TeamEstimatedMetrics(season=season).get_data_frames()[0]
+        X_current = current_metrics[['E_NET_RATING', 'E_PACE', 'E_OFF_RATING', 'E_DEF_RATING']]
+        current_metrics['PREDICTED_WINS'] = self.model.predict(X_current)
+        return current_metrics[['TEAM_ID', 'TEAM_NAME', 'PREDICTED_WINS']]
