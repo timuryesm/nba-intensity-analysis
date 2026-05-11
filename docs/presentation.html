@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>NBA Prediction Engine - Portfolio Deck</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/dracula.min.css">
+
+		<style>
+			.stats-box { background: #44475a; padding: 20px; border-radius: 10px; border: 1px solid #6272a4; }
+			.highlight { color: #ff79c6; font-weight: bold; }
+			.code-text { font-family: monospace; color: #50fa7b; }
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				
+				<!-- Slide 1: Title -->
+				<section>
+					<h1>NBA Win Prediction Engine</h1>
+					<h3>Predictive Modeling for the 2025-26 Season</h3>
+					<p><small>Created by Timur Yesmukhan | Data Analytics Portfolio</small></p>
+				</section>
+
+				<!-- Slide 2: The Problem/Objective -->
+				<section>
+					<h2>The Objective</h2>
+					<p>How well do <span class="highlight">Advanced Efficiency Metrics</span> predict regular-season success in the modern NBA?</p>
+					<ul>
+						<li>Extract 5 years of historical team data</li>
+						<li>Analyze the correlation between Pace and Net Rating</li>
+						<li>Build a predictive model for the current season</li>
+					</ul>
+				</section>
+
+				<!-- Slide 3: The Tech Stack -->
+				<section>
+					<h2>Tech Stack & Pipeline</h2>
+					<div class="stats-box">
+						<p><span class="code-text">Extraction:</span> Python & nba_api</p>
+						<p><span class="code-text">Modeling:</span> Scikit-Learn (Linear Regression)</p>
+						<p><span class="code-text">Frontend:</span> Streamlit & Plotly</p>
+						<p><span class="code-text">Storage:</span> Pandas Dataframes / CSV</p>
+					</div>
+				</section>
+
+				<!-- Slide 4: Feature Engineering -->
+				<section>
+					<h2>Feature Engineering</h2>
+					<p>I focused on four key "Pillars" of team performance:</p>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+						<div class="stats-box">Net Rating</div>
+						<div class="stats-box">Pace</div>
+						<div class="stats-box">Off. Efficiency</div>
+						<div class="stats-box">Def. Efficiency</div>
+					</div>
+				</section>
+
+				<!-- Slide 5: Model Results -->
+				<section>
+					<h2>2025-26 Results</h2>
+					<p>The model predicted <span class="highlight">OKC Thunder</span> (63.8 vs 64 wins) with near-perfect accuracy.</p>
+					<div class="stats-box">
+						<p>Mean Absolute Error (MAE): <span class="highlight">~2.8 Wins</span></p>
+					</div>
+				</section>
+
+				<!-- Slide 6: Outlier Analysis -->
+				<section>
+					<h2>Identifying Anomalies</h2>
+					<p>Why did the model miss on the <span class="highlight">Lakers</span>?</p>
+					<ul>
+						<li>Prediction: 45 Wins | Actual: 53 Wins</li>
+						<li>Insight: Statistical "Overperformance" in clutch minutes suggests factors beyond raw efficiency are at play (Veteran IQ/Coaching).</li>
+					</ul>
+				</section>
+
+				<!-- Slide 7: The Final Product -->
+				<section>
+					<h2>The Dashboard</h2>
+					<p>I deployed a live Streamlit app for real-time "What-If" analysis.</p>
+					<p><small>View live at: <em>[Your GitHub Pages Link Here]</em></small></p>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				transition: 'convex'
+			});
+		</script>
+	</body>
+</html>
